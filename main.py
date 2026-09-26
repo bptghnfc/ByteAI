@@ -452,7 +452,6 @@ async def open_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.clear()
 
     context.user_data["service"] = "image"
-    context.user_data["mode"] = "image"
 
     await image_service.ask_image(update)
 
