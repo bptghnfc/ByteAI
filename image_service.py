@@ -531,9 +531,12 @@ async def ask_image(update):
     if not update.message:
         return
 
+    user_id = update.effective_user.id
+
     await update.message.reply_text(
-        "🎨 توضیح تصویری که می‌خواهی بسازم را بفرست.\n\n"
-        "🇮🇷 فارسی یا 🇬🇧 انگلیسی، هر دو قابل استفاده هستند."
+        "🖼️ بخش ساخت تصویر\n\n"
+        "یکی از قابلیت‌های زیر را انتخاب کن:",
+        reply_markup=image_keyboard(user_id)
     )
 
 
