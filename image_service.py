@@ -510,16 +510,30 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # IMAGE FLOW
 # =========================
 
+def image_keyboard(user_id):
+    rows = [
+        ["🎨 ساخت تصویر"],
+        ["✨ ساخت پرامپت"],
+        ["🔄 ساخت تصویر جدید"],
+        ["🏠 منوی اصلی"],
+    ]
+
+    if user_id == ADMIN_ID:
+        rows.append(["👑 پنل مدیریت"])
+
+    return ReplyKeyboardMarkup(
+        rows,
+        resize_keyboard=True
+    )
+
+
 async def ask_image(update):
     if not update.message:
         return
 
-    user_id = update.effective_user.id
-
     await update.message.reply_text(
-        "🖼️ بخش ساخت تصویر\n\n"
-        "یکی از قابلیت‌های زیر را انتخاب کن:",
-        reply_markup=main_keyboard(user_id)
+        "🎨 توضیح تصویری که می‌خواهی بسازم را بفرست.\n\n"
+        "🇮🇷 فارسی یا 🇬🇧 انگلیسی، هر دو قابل استفاده هستند."
     )
 
 
