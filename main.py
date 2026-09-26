@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # ENV
 # =========================================================
 
-load_dotenv("/data/data/com.termux/files/home/ByteAI/.env")
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 from telegram import (
     Update,
@@ -50,7 +50,7 @@ def mask_api(value):
 
 
 def update_env_value(key, value):
-    env_path = Path("/data/data/com.termux/files/home/ByteAI/.env")
+    env_path = Path(__file__).resolve().parent / ".env"
 
     if env_path.exists():
         lines = env_path.read_text().splitlines()
@@ -317,7 +317,7 @@ async def handle_api_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Reload .env values
     load_dotenv(
-        "/data/data/com.termux/files/home/ByteAI/.env",
+        Path(__file__).resolve().parent / ".env",
         override=True
     )
 
