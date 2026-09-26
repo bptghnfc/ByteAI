@@ -345,7 +345,7 @@ def main_keyboard(user_id=None):
     rows = [
         ["💬 چت با هوش مصنوعی", "🖼️ ساخت تصویر"],
         ["🎙️ تبدیل متن به ویس", "🎤 تبدیل ویس به متن"],
-        ["⚙️ تنظیمات"],
+        ["ℹ️ اطلاعات"],
     ]
 
     if user_id == ADMIN_ID:
@@ -507,10 +507,21 @@ async def open_voice_to_text(update: Update, context: ContextTypes.DEFAULT_TYPE)
 # SETTINGS
 # =========================================================
 
-async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def information(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "⚙️ تنظیمات\n\n"
-        "فعلاً تنظیمات عمومی اینجا قرار می‌گیرند.",
+        "ℹ️ درباره ByteAI\\n\\n"
+        "🤖 به ByteAI خوش اومدی!\\n\\n"
+        "این بات با هدف ارائه ابزارهای هوش مصنوعی به‌صورت رایگان ساخته شده "
+        "تا همه بتونن راحت‌تر از امکانات هوش مصنوعی استفاده کنن.\\n\\n"
+        "✨ امکانات بات:\\n"
+        "💬 چت با هوش مصنوعی\\n"
+        "🖼️ ساخت تصویر با هوش مصنوعی\\n"
+        "🎙️ تبدیل متن به ویس\\n"
+        "🎤 تبدیل ویس به متن\\n\\n"
+        "👨‍💻 سازنده: Ramin\\n\\n"
+        "📢 کانال ما: @ByteTunnel\\n\\n"
+        "❤️ ممنون که از ByteAI استفاده می‌کنی. "
+        "امیدواریم کنار هم روزهای خوبی بسازیم!",
         reply_markup=main_keyboard(update.effective_user.id)
     )
 
@@ -600,8 +611,8 @@ async def text_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await open_voice_to_text(update, context)
         return
 
-    if text == "⚙️ تنظیمات":
-        await settings(update, context)
+    if text == "ℹ️ اطلاعات":
+        await information(update, context)
         return
 
     if text == "👑 پنل مدیریت":
