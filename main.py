@@ -509,17 +509,17 @@ async def open_voice_to_text(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def information(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "ℹ️ درباره ByteAI\\n\\n"
-        "🤖 به ByteAI خوش اومدی!\\n\\n"
+        "ℹ️ درباره ByteAI\n\n"
+        "🤖 به ByteAI خوش اومدی!\n\n"
         "این بات با هدف ارائه ابزارهای هوش مصنوعی به‌صورت رایگان ساخته شده "
-        "تا همه بتونن راحت‌تر از امکانات هوش مصنوعی استفاده کنن.\\n\\n"
-        "✨ امکانات بات:\\n"
-        "💬 چت با هوش مصنوعی\\n"
-        "🖼️ ساخت تصویر با هوش مصنوعی\\n"
-        "🎙️ تبدیل متن به ویس\\n"
-        "🎤 تبدیل ویس به متن\\n\\n"
-        "👨‍💻 سازنده: Ramin\\n\\n"
-        "📢 کانال ما: @ByteTunnel\\n\\n"
+        "تا همه بتونن راحت‌تر از امکانات هوش مصنوعی استفاده کنن.\n\n"
+        "✨ امکانات بات:\n"
+        "💬 چت با هوش مصنوعی\n"
+        "🖼️ ساخت تصویر با هوش مصنوعی\n"
+        "🎙️ تبدیل متن به ویس\n"
+        "🎤 تبدیل ویس به متن\n\n"
+        "👨‍💻 سازنده: Ramin\n\n"
+        "📢 کانال ما: @ByteTunnel\n\n"
         "❤️ ممنون که از ByteAI استفاده می‌کنی. "
         "امیدواریم کنار هم روزهای خوبی بسازیم!",
         reply_markup=main_keyboard(update.effective_user.id)
