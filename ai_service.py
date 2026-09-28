@@ -823,7 +823,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             while True:
-                await asyncio.sleep(0.6)
+                await asyncio.sleep(0.25)
                 index = (index + 1) % len(loading_frames)
 
                 await wait_message.edit_text(
