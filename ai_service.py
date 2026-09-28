@@ -800,8 +800,44 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     mode = context.user_data.get("mode", "chat")
 
-    # پیام انتظار
-    wait_message = await update.message.reply_text("Typing...")
+    # پیام لودینگ متحرک
+    loading_frames = [
+        "⠋",
+        "⠙",
+        "⠹",
+        "⠸",
+        "⠼",
+        "⠴",
+        "⠦",
+        "⠧",
+        "⠇",
+        "⠏",
+    ]
+
+    wait_message = await update.message.reply_text(
+        loading_frames[0]
+    )
+
+    async def animate_loading():
+        index = 0
+
+        try:
+            while True:
+                await asyncio.sleep(0.6)
+                index = (index + 1) % len(loading_frames)
+
+                await wait_message.edit_text(
+                    loading_frames[index]
+                )
+
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            print("LOADING ANIMATION ERROR:", repr(e))
+
+    loading_task = asyncio.create_task(
+        animate_loading()
+    )
 
     await update.message.chat.send_action(
         ChatAction.TYPING
@@ -812,6 +848,12 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user.id,
             text,
             mode,
+        )
+
+        loading_task.cancel()
+        await asyncio.gather(
+            loading_task,
+            return_exceptions=True,
         )
 
         # Telegram message limit
