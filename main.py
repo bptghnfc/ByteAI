@@ -714,28 +714,58 @@ async def inline_ai(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = inline_query.query.strip()
 
     if not query:
-        await inline_query.answer(
-            [],
-            cache_time=1,
-            is_personal=True,
-        )
         return
 
     try:
-        user_id = inline_query.from_user.id
+        # Inline queries must be answered quickly.
+        # Keep this request separate from the normal Ramin AI history.
+        def request_inline():
+            messages = [
+                {
+                    "role": "system",
+                    "content": ai_service.SYSTEM_PROMPT,
+                },
+                {
+                    "role": "user",
+                    "content": query,
+                },
+            ]
 
-        answer = await ai_service.ask_ai(
-            user_id,
-            query,
-            mode="chat",
+            response = ai_service.client.chat.completions.create(
+                model=ai_service.DAHL_MODEL,
+                messages=messages,
+                temperature=0.7,
+                max_tokens=300,
+            )
+
+            answer = response.choices[0].message.content or ""
+            answer = ai_service.re.sub(
+                r"<think>.*?</think>",
+                "",
+                answer,
+                flags=ai_service.re.DOTALL | ai_service.re.IGNORECASE,
+            ).strip()
+
+            answer = ai_service.re.sub(
+                r"<think>.*$",
+                "",
+                answer,
+                flags=ai_service.re.DOTALL | ai_service.re.IGNORECASE,
+            ).strip()
+
+            return answer or "پاسخی از مدل دریافت نشد."
+
+        answer = await __import__("asyncio").wait_for(
+            __import__("asyncio").to_thread(request_inline),
+            timeout=7,
         )
 
         result = InlineQueryResultArticle(
-            id=f"ramin_{user_id}_{inline_query.id}",
+            id=f"ramin_{inline_query.id}",
             title="🤖 Ramin AI",
             description=answer[:200],
             input_message_content=InputTextMessageContent(
-                message_text=answer
+                message_text=answer,
             ),
         )
 
@@ -748,11 +778,14 @@ async def inline_ai(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         print("INLINE AI ERROR:", repr(e))
 
-        await inline_query.answer(
-            [],
-            cache_time=1,
-            is_personal=True,
-        )
+        try:
+            await inline_query.answer(
+                [],
+                cache_time=1,
+                is_personal=True,
+            )
+        except Exception as answer_error:
+            print("INLINE ANSWER ERROR:", repr(answer_error))
 
 # =========================================================
 # MAIN
