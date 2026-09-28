@@ -823,13 +823,14 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # پیام لودینگ متحرک
     loading_frames = [
-        "▁  Thinking",
-        "▃  Thinking",
-        "▅  Thinking",
-        "▇  Thinking",
-        "▅  Thinking",
-        "▃  Thinking",
-        "▁  Thinking",
+        "🌑 Typing...",
+        "🌒 Typing...",
+        "🌓 Typing...",
+        "🌔 Typing...",
+        "🌕 Typing...",
+        "🌖 Typing...",
+        "🌗 Typing...",
+        "🌘 Typing...",
     ]
 
     wait_message = await update.message.reply_text(
