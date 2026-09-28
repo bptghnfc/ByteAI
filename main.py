@@ -14,6 +14,8 @@ from telegram import (
     ReplyKeyboardMarkup,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    InlineQueryResultArticle,
+    InputTextMessageContent,
 )
 from telegram.constants import ChatMemberStatus
 from telegram.ext import (
@@ -21,6 +23,7 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     CallbackQueryHandler,
+    InlineQueryHandler,
     ContextTypes,
     filters,
 )
@@ -697,6 +700,60 @@ async def error_handler(update, context):
     print("BOT ERROR:", repr(context.error))
 
 
+
+# =========================================================
+# INLINE AI
+# =========================================================
+
+async def inline_ai(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    inline_query = update.inline_query
+
+    if not inline_query:
+        return
+
+    query = inline_query.query.strip()
+
+    if not query:
+        await inline_query.answer(
+            [],
+            cache_time=1,
+            is_personal=True,
+        )
+        return
+
+    try:
+        user_id = inline_query.from_user.id
+
+        answer = await ai_service.ask_ai(
+            user_id,
+            query,
+            mode="chat",
+        )
+
+        result = InlineQueryResultArticle(
+            id=f"ramin_{user_id}_{inline_query.id}",
+            title="🤖 Ramin AI",
+            description=answer[:200],
+            input_message_content=InputTextMessageContent(
+                message_text=answer
+            ),
+        )
+
+        await inline_query.answer(
+            [result],
+            cache_time=1,
+            is_personal=True,
+        )
+
+    except Exception as e:
+        print("INLINE AI ERROR:", repr(e))
+
+        await inline_query.answer(
+            [],
+            cache_time=1,
+            is_personal=True,
+        )
+
 # =========================================================
 # MAIN
 # =========================================================
@@ -748,6 +805,11 @@ def main():
     # Image callback buttons
     app.add_handler(
         CallbackQueryHandler(image_callback_router)
+    )
+
+    # Inline AI
+    app.add_handler(
+        InlineQueryHandler(inline_ai)
     )
 
     # Text messages
