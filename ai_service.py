@@ -815,7 +815,8 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
 
     wait_message = await update.message.reply_text(
-        loading_frames[0]
+        loading_frames[0],
+        reply_to_message_id=update.message.message_id
     )
 
     async def animate_loading():
