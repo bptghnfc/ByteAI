@@ -802,16 +802,13 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # پیام لودینگ متحرک
     loading_frames = [
-        "⠋",
-        "⠙",
-        "⠹",
-        "⠸",
-        "⠼",
-        "⠴",
-        "⠦",
-        "⠧",
-        "⠇",
-        "⠏",
+        "▁  Thinking",
+        "▃  Thinking",
+        "▅  Thinking",
+        "▇  Thinking",
+        "▅  Thinking",
+        "▃  Thinking",
+        "▁  Thinking",
     ]
 
     wait_message = await update.message.reply_text(
@@ -824,7 +821,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             while True:
-                await asyncio.sleep(0.25)
+                await asyncio.sleep(0.35)
                 index = (index + 1) % len(loading_frames)
 
                 await wait_message.edit_text(
